@@ -1,3 +1,5 @@
+.PHONY: data prepare test clean
+
 data:
 	mkdir data
 	python generate_data.py
@@ -9,6 +11,6 @@ test:
 	python run_tests.py
 
 clean:
-	rm data/*.out
-	rm data/*.ok
-	rm data/*.err
+	rm -rf data/*.out
+	rm -rf data/*.ok
+	rm -rf data/*.err

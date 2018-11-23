@@ -28,9 +28,10 @@ for test in tests:
     max_size = float(test[4:]) * 1.75
     time_encode = get_seconds(subprocess.Popen(["time", "src/bms2A", "data/" + test], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate())
     size = os.path.getsize("data/" + test + ".out")
-    subprocess.call(["./errInjecter", "-i", "data/" + test + ".out", "-r", "1"])
+    subprocess.call(["./errInjecter", "-i", "data/" + test + ".out", "-r", "17"])
     time_decode = get_seconds(subprocess.Popen(["time", "src/bms2B", "data/" + test + ".out.err"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate())
     result = subprocess.call(["diff", "data/" + test, "data/" + test + ".out.err.ok"])
+
     print(test)
     result = "OK" if result == 0 else "FAIL"
     result_pass += 1 if result == "OK" else 0

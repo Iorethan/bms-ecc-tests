@@ -13,9 +13,7 @@ sizes = [
     2 * megabyte + 1,
     2 * megabyte + 2,
     3 * megabyte,
-    5 * megabyte,
-    20 * megabyte,
-    100 * megabyte
+    5 * megabyte
 ]
 
 for size in sizes:
