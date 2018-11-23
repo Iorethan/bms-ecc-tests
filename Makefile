@@ -1,4 +1,5 @@
 data:
+	mkdir data
 	python generate_data.py
 
 prepare:
