@@ -43,6 +43,27 @@ for test in tests:
     size_pass += 1 if result == "OK" else 0
     print("Size: \t\t" + result + "\t" + str(size) + "\t(limit: " + str(int(max_size)) + ")")
 
+for test in tests:
+    total += 1
+    max_time = 10 * float(test[4:]) / megabyte
+    max_size = float(test[4:]) * 1.75
+    time_encode = get_seconds(subprocess.Popen(["time", "src/bms2A", "data/" + test], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate())
+    size = os.path.getsize("data/" + test + ".out")
+    subprocess.call(["./errInjecter", "-i", "data/" + test + ".out", "-b", "255"])
+    time_decode = get_seconds(subprocess.Popen(["time", "src/bms2B", "data/" + test + ".out.err"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate())
+    result = subprocess.call(["diff", "data/" + test, "data/" + test + ".out.err.ok"])
+
+    print(test)
+    result = "OK" if result == 0 else "FAIL"
+    result_pass += 1 if result == "OK" else 0
+    print("Comparison: \t" + result + "\tencode\tdecode\tlimit")
+    result = "OK" if time_encode <= max_time and time_decode <= max_time else "FAIL"
+    time_pass += 1 if result == "OK" else 0
+    print("Time \t\t" + result + " \t" + str(time_encode) + "s\t" + str(time_decode) + "s\t" + str(max_time) + "s")
+    result = "OK" if size <= max_size else "FAIL"
+    size_pass += 1 if result == "OK" else 0
+    print("Size: \t\t" + result + "\t" + str(size) + "\t(limit: " + str(int(max_size)) + ")")
+
 print("Results:")
 print("Comparisons: \t" + str(result_pass) + "/" + str(total))
 print("Time: \t\t" + str(time_pass) + "/" + str(total))
