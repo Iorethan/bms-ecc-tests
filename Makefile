@@ -11,3 +11,4 @@ test:
 clean:
 	rm data/*.out
 	rm data/*.ok
+	rm data/*.err

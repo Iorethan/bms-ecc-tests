@@ -14,7 +14,7 @@ def get_seconds(time):
     return float(time[1].split("user")[0])
 
 megabyte = 1024 * 1024
-tests = filter(lambda x: x[-4:] != ".out" and x[-3:] != ".ok", os.listdir("data/"))
+tests = filter(lambda x: x[-4:] != ".out" and x[-3:] != ".ok" and x[-4:] != ".err", os.listdir("data/"))
 tests = sorted(tests, cmp=comparator)
 
 total = 0
@@ -27,9 +27,10 @@ for test in tests:
     max_time = 10 * float(test[4:]) / megabyte
     max_size = float(test[4:]) * 1.75
     time_encode = get_seconds(subprocess.Popen(["time", "src/bms2A", "data/" + test], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate())
-    time_decode = get_seconds(subprocess.Popen(["time", "src/bms2B", "data/" + test + ".out"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate())
-    result = subprocess.call(["diff", "data/" + test, "data/" + test + ".out.ok"])
     size = os.path.getsize("data/" + test + ".out")
+    subprocess.call(["./errInjecter", "-i", "data/" + test + ".out", "-r", "1"])
+    time_decode = get_seconds(subprocess.Popen(["time", "src/bms2B", "data/" + test + ".out.err"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate())
+    result = subprocess.call(["diff", "data/" + test, "data/" + test + ".out.err.ok"])
     print(test)
     result = "OK" if result == 0 else "FAIL"
     result_pass += 1 if result == "OK" else 0
