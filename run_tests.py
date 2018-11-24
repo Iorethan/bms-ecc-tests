@@ -14,7 +14,7 @@ def get_seconds(time):
     return float(time[1].split("user")[0])
 
 megabyte = 1024 * 1024
-tests = filter(lambda x: x[-4:] != ".out" and x[-3:] != ".ok" and x[-4:] != ".err", os.listdir("data/"))
+tests = filter(lambda x: x[-4:] != ".out" and x[-3:] != ".ok" and x[-4:] != ".err" and x[:1] != ".", os.listdir("data/"))
 tests = sorted(tests, cmp=comparator)
 
 total = 0
