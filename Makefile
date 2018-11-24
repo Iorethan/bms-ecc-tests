@@ -1,7 +1,6 @@
 .PHONY: data prepare test clean
 
 data:
-	mkdir data
 	python generate_data.py
 
 prepare:
